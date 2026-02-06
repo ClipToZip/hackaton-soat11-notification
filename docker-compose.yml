@@ -1,0 +1,38 @@
+services:
+  localstack:
+    image: localstack/localstack:3.8
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sqs
+      - DEFAULT_REGION=${AWS_REGION:-us-east-1}
+      - DEBUG=0
+    volumes:
+      - ./localstack/init-queue.sh:/etc/localstack/init/ready.d/init-queue.sh:ro
+
+  notification-service:
+    env_file:
+      - .env
+    build: .
+    container_name: notification-service
+    depends_on:
+      - localstack
+    ports:
+      - "8083:8083"
+    environment:
+      # AWS/SQS
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-test}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-test}
+      - AWS_SQS_ENDPOINT=http://localstack:4566
+      - APP_SQS_QUEUE_NAME=${APP_SQS_QUEUE_NAME:-cliptozip-notifications}
+
+      # Gmail SMTP (App Password)
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=${GMAIL_USERNAME}
+      - SPRING_MAIL_PASSWORD=${GMAIL_APP_PASSWORD}
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+      - APP_EMAIL_FROM=${APP_EMAIL_FROM:-ClipToZip <cliptozip.noreply@gmail.com>}
