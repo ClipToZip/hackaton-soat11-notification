@@ -11,13 +11,13 @@ class SimpleTemplateAdapterTest {
 
     @Test
     void shouldCreateFinalizadoEmail() {
-        var event = NotificationEvent.builder()
-                .titulo("Meu vídeo")
-                .status("FINALIZADO")
-                .mensagem("Zip pronto")
-                .emailUsuario("user@x.com")
-                .nomeUsuario("Samuel")
-                .build();
+        var event = new NotificationEvent(
+                "Meu vídeo",
+                "FINALIZADO",
+                "Zip pronto",
+                "user@x.com",
+                "Samuel"
+        );
 
         var email = adapter.buildEmail(event);
 
@@ -25,5 +25,23 @@ class SimpleTemplateAdapterTest {
         assertTrue(email.subject().contains("Status"));
         assertTrue(email.body().contains("FINALIZADO"));
         assertTrue(email.body().contains("Meu vídeo"));
+    }
+
+    @Test
+    void shouldHandleBlankStatusAndBlankDetails() {
+        var event = new NotificationEvent(
+                "Meu vídeo",
+                "   ",
+                "   ",
+                "user@x.com",
+                "Samuel"
+        );
+
+        var email = adapter.buildEmail(event);
+
+        assertEquals("user@x.com", email.to());
+        assertTrue(email.subject().contains("Atualizacao"));
+        assertTrue(email.body().contains("Status: (vazio)"));
+        assertFalse(email.body().contains("Detalhes:"));
     }
 }
