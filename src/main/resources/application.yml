@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 3000
 
 spring:
   application:
@@ -14,16 +14,16 @@ spring:
       # LocalStack settings live in application-local.yml.
 
   mail:
-    host: ${SPRING_MAIL_HOST:localhost}
-    port: ${SPRING_MAIL_PORT:1025}
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
     username: ${SPRING_MAIL_USERNAME:}
     password: ${SPRING_MAIL_PASSWORD:}
     properties:
       mail:
         smtp:
-          auth: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:false}
+          auth: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:true}
           starttls:
-            enable: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE:false}
+            enable: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE:true}
 
 management:
   endpoints:
@@ -33,7 +33,7 @@ management:
 
 app:
   sqs:
-    queue-name: ${APP_SQS_QUEUE_NAME:cliptozip-notifications}
+    queue-name: ${APP_SQS_QUEUE_NAME:cliptozip-notifications-dev}
   email:
     from: ${APP_EMAIL_FROM:no-reply@cliptozip.local}
   dedup:
