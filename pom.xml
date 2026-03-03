@@ -104,6 +104,12 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.12</version>
+        <configuration>
+          <excludes>
+            <exclude>br/com/cliptozip/notification/config/**</exclude>
+            <exclude>br/com/cliptozip/notification/NotificationServiceApplication*</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>prepare-agent</id>
@@ -130,6 +136,10 @@
               <rules>
                 <rule>
                   <element>BUNDLE</element>
+                  <excludes>
+                    <exclude>br/com/cliptozip/notification/config/**</exclude>
+                    <exclude>br/com/cliptozip/notification/NotificationServiceApplication*</exclude>
+                  </excludes>
                   <limits>
                     <limit>
                       <counter>INSTRUCTION</counter>
@@ -139,10 +149,6 @@
                   </limits>
                 </rule>
               </rules>
-              <excludes>
-                <exclude>**/NotificationServiceApplication*</exclude>
-                <exclude>**/config/**</exclude>
-              </excludes>
             </configuration>
           </execution>
         </executions>
