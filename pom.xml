@@ -120,14 +120,14 @@
 
           <execution>
             <id>report</id>
-            <phase>verify</phase>
+            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
           </execution>
 
           <execution>
-            <id>check</id>
+            <id>jacoco-check</id>
             <phase>verify</phase>
             <goals>
               <goal>check</goal>
@@ -142,7 +142,7 @@
                   </excludes>
                   <limits>
                     <limit>
-                      <counter>INSTRUCTION</counter>
+                      <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
                       <minimum>0.80</minimum>
                     </limit>
@@ -168,10 +168,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.4</version>
         <configuration>
-          <useSystemClassLoader>false</useSystemClassLoader>
-          <!-- required so JaCoCo's argLine is not overwritten -->
-          <argLine>${argLine}</argLine>
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/*TestRunner.java</include>
+            <include>**/CucumberTestRunner.java</include>
+          </includes>
         </configuration>
       </plugin>
       <plugin>
