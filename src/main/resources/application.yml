@@ -1,0 +1,41 @@
+server:
+  port: 3000
+
+spring:
+  application:
+    name: notification-service
+
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION:us-east-1}
+      # In production, do NOT set credentials or endpoints here.
+      # The AWS SDK will use the default credential provider chain (IAM role, env vars, etc.).
+      # LocalStack settings live in application-local.yml.
+
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+app:
+  sqs:
+    queue-name: ${APP_SQS_QUEUE_NAME:cliptozip-notifications-dev}
+  email:
+    from: ${APP_EMAIL_FROM:no-reply@cliptozip.local}
+  dedup:
+    enabled: ${APP_DEDUP_ENABLED:true}
+    ttl-seconds: ${APP_DEDUP_TTL_SECONDS:900}
