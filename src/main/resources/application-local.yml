@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY_ID:test}
+        secret-key: ${AWS_SECRET_ACCESS_KEY:test}
+      sqs:
+        endpoint: ${AWS_SQS_ENDPOINT:http://localhost:4566}
+
+  mail:
+    # Local dev defaults for MailHog (or similar)
+    host: ${SPRING_MAIL_HOST:localhost}
+    port: ${SPRING_MAIL_PORT:1025}
